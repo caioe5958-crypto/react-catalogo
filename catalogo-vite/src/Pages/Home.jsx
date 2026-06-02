@@ -1,23 +1,37 @@
 //----------------------------------Imports-----------------------------------//
-import { useState, useEffect } from "react"
-import ProdutoCard from "../components/ProdutoCard"
-import FormProd from "../components/FormProd"
+import { useState, useContext } from "react"
+import TaskContext from "../context/TaskContext"
+import TodoItem from "../components/TodoItem"
+import TodoForm from "../components/TodoForm"
 
 //---------------------------------------------------------------------------//
 
 function Home() {  
 
 //---------------------------------Const-------------------------------------//
-const [produtos, setProdutos] = useState([])
-
-const [carregando, setCarregando] = useState(true)
+const { tarefas, setTarefas } = useContext(TaskContext)
 
 const [formulario, setFormulario] = useState({
-  nome: "",
-  preco: "",
-  descricao: "",
-  imagem:""
+
+  texto:"",
+
 })
+
+const [filtro, setFiltro] = useState("todas")
+
+const tarefasFiltradas = tarefas.filter(tarefa => {
+
+    if (filtro === "concluidas") {
+      return tarefa.concluida
+    }
+
+    if (filtro === "pendentes") {
+      return !tarefa.concluida
+    }
+
+    return true
+  })
+
 //---------------------------------------------------------------------------//
 function handleChange(e) {
 
@@ -32,83 +46,85 @@ function handleSubmit(evento) {
 
   evento.preventDefault()
 
-  const novoProduto = {
-    id: produtos.length > 0 ? produtos[produtos.length - 1].id +1 : 1,
+  const novaTarefa = {
+    id: tarefas.length > 0 ? tarefas[tarefas.length - 1].id +1 : 1,
 
-    nome: formulario.nome,
+    texto: formulario.texto,
 
-    preco: formulario.preco,
-
-    descricao: formulario.descricao,
-
-    imagem: formulario.imagem
+    concluida: false,
   }
 
-  setProdutos([...produtos, novoProduto])
+  setTarefas([...tarefas, novaTarefa])
 
   setFormulario({
-    nome: "",
-    preco: "",
-    descricao: "",
-    imagem:""
+
+    texto:"",
+
   })
 }
 //---------------------------------------------------------------------------//
-useEffect(() => {
 
-  setTimeout(() => {
+function removerItem(id){
+  const NovasTarefas = tarefas.filter(
+    tarefa => tarefa.id !== id
+  )
 
-    setProdutos([
-      {
-        id: 1,
-        nome: "Notebook Gamer",
-        preco: "5000",
-        descricao: "Notebook potente para jogos",
-        imagem:"https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y29tcHV0YWRvciUyMHBvcnQlQzMlQTF0aWx8ZW58MHx8MHx8fDA%3D"
-      },
+  setTarefas(NovasTarefas)
+}
+//---------------------------------------------------------------------------//
 
-      {
-        id: 2,
-        nome: "iPhone",
-        preco: "7000",
-        descricao: "Celular da Apple",
-        imagem:"https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGlwaG9uZXxlbnwwfHwwfHx8MA%3D%3D"
+function concluirTarefa(id) {
+  const tarefasAtualizadas = tarefas.map(tarefa=> {
+    if (tarefa.id === id){
+      return{
+        ...tarefa,
+        concluida: !tarefa.concluida
       }
-    ])
+    }
+    return tarefa
+  })
 
-    setCarregando(false)
+  setTarefas(tarefasAtualizadas)
+}
 
-  }, 2000)
-
-}, [])
 //---------------------------------------------------------------------------//
   return (
     <main>
-      <h1>Meu Catálogo de Produtos</h1>
+      <h1>To-do List</h1>
 
-        <FormProd
+        <TodoForm
         formulario={formulario}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         />
-      
-      { carregando ? (
-          <p>Carregando...</p>
-        ) : (
-        
-        <div className="lista-produtos">
-          {produtos.map(produto => (
-            <ProdutoCard
-              key={produto.id}
-              nome={produto.nome}
-              preco={produto.preco}
-              descricao={produto.descricao}
-              imagem={produto.imagem}
+
+        <div className="filtros">
+
+          <button onClick={() => setFiltro("todas")}>
+            Todas
+          </button>
+
+          <button onClick={() => setFiltro("concluidas")}>
+            Concluídas
+          </button>
+
+          <button onClick={() => setFiltro("pendentes")}>
+            Pendentes
+          </button>
+
+        </div>
+
+        <div className="lista-tarefas">
+          {tarefasFiltradas.map(tarefa => (
+            <TodoItem
+              key={tarefa.id}
+              texto={tarefa.texto}
+              concluida={tarefa.concluida}
+              remover={() => removerItem(tarefa.id)}
+              concluir={() => concluirTarefa(tarefa.id)}
             />
           ) ) }
         </div>
-        )
-    }
     </main>
   )
 }

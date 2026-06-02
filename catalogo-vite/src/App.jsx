@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import ProdutoCard from "./components/ProdutoCard"
+import ProdutoCard from "./components/TodoItem"
 
 import Home from "./pages/Home"
 
