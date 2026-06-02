@@ -1,16 +1,56 @@
-# React + Vite
+# 📝 Todo React Avançado
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicação de lista de tarefas (Todo List) desenvolvida com React, utilizando recursos avançados como Hooks, Context API, Hooks customizados e Memorização.
 
-Currently, two official plugins are available:
+## 🚀 Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Adicionar novas tarefas
+- Marcar tarefas como concluídas
+- Remover tarefas
+- Filtrar tarefas (todas, concluídas e pendentes)
 
-## React Compiler
+## 🧠 Conceitos aplicados
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Este projeto foi desenvolvido com foco em boas práticas e recursos avançados do React:
 
-## Expanding the ESLint configuration
+### Hooks
+- `useState` → gerenciamento de estado das tarefas
+- `useEffect` → persistência de dados no `localStorage` (opcional)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Context API
+- Gerenciamento global do estado das tarefas
+- Uso de `useContext` para acesso e atualização do estado em diferentes componentes
+
+### Hooks Customizados
+- Criação de hooks reutilizáveis para lógica como:
+  - manipulação de `localStorage`
+  - controle de inputs
+
+### Memoização
+- Uso de `useMemo` e `React.memo` para evitar renderizações desnecessárias
+- Otimização da lista de tarefas e filtros
+
+## 🛠️ Tecnologias utilizadas
+
+- React
+- JavaScript
+- Context API
+- Hooks (useState, useEffect, useContext, useMemo)
+- CSS 
+
+## 📦 Como rodar o projeto
+
+1. Clone o repositório:
+git clone https://github.com/SEU-USUARIO/todo-react-avancado.git
+
+2. Acesse a pasta do projeto
+cd todo-react-avancado
+
+3. Instale as dependências
+npm install
+
+4. Inicie o projeto
+npm run dev
+
+5. Abra no navegador
+http://localhost:5173
